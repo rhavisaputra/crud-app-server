@@ -13,39 +13,49 @@ let postgresqlConfig = require('./databases/postgresql.database')
 let postgresqlDataRoute = require('./routes/postgresql/user.route')
 let mysqlDataRoute = require('./routes/mysql/user.route')
 
-// Connecting MySQL Database
+// Connect to Mysql Database
 const mysqlSequelize = new sequelize(mysqlConfig.mysqlConnect)
 mysqlSequelize
     .authenticate()
     .then(() => {
-        console.log('Successfully connect to MySQL database.')
+        console.log('> Successfully connect to Mysql database.')
     })
     .catch(err => {
-        console.error('Unable to connect MySQL database:', err)
+        console.error('> Unable to connect Mysql database:', err)
     })
 
-// Connecting PostgreSQL Database
+// Connect to Postgresql Database
 const postgresqlSequelize = new sequelize(postgresqlConfig.postgresqlConnect)
 postgresqlSequelize
     .authenticate()
     .then(() => {
-        console.log('Successfully connect to PostgreSQL database.')
+        console.log('> Successfully connect to Postgresql database.')
     })
     .catch(err => {
-        console.error('Unable to connect PostgreSQL database:', err)
+        console.error('> Unable to connect Postgresql database:', err)
     })
 
-// // Sync
-// const User = require('./models/postgresql/user.model')
+// Sync
+const UserMysql = require('./models/mysql/user.model')
+const UserPostgresql = require('./models/postgresql/user.model')
 
-// User
-//     .sync()
-//     .then(() => {
-//         console.log('Successfully Sync to PostgreSQL database.')
-//     })
-//     .catch(err => {
-//         console.error('Unable to Sync PostgreSQL database:', err)
-//     })
+UserMysql
+    .sync()
+    .then(() => {
+        console.log('> Successfully Sync to UserMysql.')
+    })
+    .catch(err => {
+        console.error('> Unable to Sync UserMysql:', err)
+    })
+
+UserPostgresql
+    .sync()
+    .then(() => {
+        console.log('> Successfully Sync to UserPostgresql.')
+    })
+    .catch(err => {
+        console.error('> Unable to Sync UserPostgresql:', err)
+    })
 
 const app = express()
 app.use(bodyParser.raw())
